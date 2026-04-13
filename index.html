@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>專屬女友兌換中心</title>
+    <style>
+        :root {
+            --primary-pink: #ffafbd;
+            --used-gray: #d1d1d1;
+        }
+        body { font-family: sans-serif; background: #fdf2f4; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        h2 { color: #d88a8a; }
+        
+        .container { width: 100%; max-width: 400px; }
+        
+        /* 票券樣式 */
+        .coupon {
+            background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-left: 8px solid var(--primary-pink);
+            position: relative; overflow: hidden;
+        }
+        .coupon.used { border-left-color: var(--used-gray); opacity: 0.7; }
+        
+        .coupon-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 8px; }
+        .coupon-desc { font-size: 0.9rem; color: #666; margin-bottom: 15px; }
+        
+        button {
+            background: var(--primary-pink); border: none; color: white;
+            padding: 8px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s;
+        }
+        button:disabled { background: var(--used-gray); cursor: not-allowed; }
+
+        /* 已使用印章 */
+        .stamp {
+            position: absolute; right: 10px; top: 10px; border: 3px solid #ff4d4d;
+            color: #ff4d4d; padding: 5px; border-radius: 5px; transform: rotate(20deg);
+            font-weight: bold; display: none;
+        }
+        .used .stamp { display: block; }
+        
+        .history-title { margin-top: 40px; font-size: 1rem; color: #999; }
+    </style>
+</head>
+<body>
+
+    <h2>❤️ 專屬兌換中心</h2>
+    <div id="active-coupons" class="container"></div>
+    
+    <div class="history-title">——— 已歸檔的券 ———</div>
+    <div id="used-coupons" class="container"></div>
+
+    <script>
+        // 未來要新增券種，只需在這裡增加物件
+        const couponData = [
+            { id: 1, title: "全身精油按摩 60min", desc: "有效解除一整天的疲勞，含肩頸加強。" },
+            { id: 2, title: "腿部舒壓按摩", desc: "適合逛街走整天後的專屬服務。" },
+            { id: 3, title: "陪看任何想看的電影", desc: "附贈爆米花與無限量溫水。" }
+        ];
+
+        function render() {
+            const activeContainer = document.getElementById('active-coupons');
+            const usedContainer = document.getElementById('used-coupons');
+            activeContainer.innerHTML = '';
+            usedContainer.innerHTML = '';
+
+            const usedIds = JSON.parse(localStorage.getItem('usedCoupons') || '[]');
+
+            couponData.forEach(coupon => {
+                const isUsed = usedIds.includes(coupon.id);
+                const html = `
+                    <div class="coupon ${isUsed ? 'used' : ''}">
+                        <div class="stamp">USED</div>
+                        <div class="coupon-title">${coupon.title}</div>
+                        <div class="coupon-desc">${coupon.desc}</div>
+                        ${isUsed ? '' : `<button onclick="useCoupon(${coupon.id})">立即兌換</button>`}
+                    </div>
+                `;
+                if (isUsed) {
+                    usedContainer.innerHTML += html;
+                } else {
+                    activeContainer.innerHTML += html;
+                }
+            });
+        }
+
+        window.useCoupon = function(id) {
+            if(confirm("確定要現在使用這張券嗎？(這將無法撤回喔！)")) {
+                let usedIds = JSON.parse(localStorage.getItem('usedCoupons') || '[]');
+                usedIds.push(id);
+                localStorage.setItem('usedCoupons', JSON.stringify(usedIds));
+                render();
+            }
+        }
+
+        render();
+    </script>
+</body>
+</html>
