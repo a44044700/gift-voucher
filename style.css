@@ -1,0 +1,496 @@
+/* 時尚雜誌風格配置 */
+:root {
+    --olive-green: #556B2F;
+    --deep-navy: #121F33;
+    --pure-black: #050505;
+    --off-white: #FFFFFF;
+    --line-color: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    background-color: var(--pure-black);
+    color: var(--off-white);
+    font-family: "Optima", "Didot", "Times New Roman", serif;
+    margin: 0;
+    padding: 0;
+    letter-spacing: 0.15em;
+    line-height: 1.6;
+}
+
+/* 背景方格與線條裝飾 */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(var(--line-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line-color) 1px, transparent 1px);
+    background-size: 50px 50px; /* 方格大小 */
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* 密碼鎖畫面 */
+/* =========================================
+   銀河星星流動效果 (Galaxy Stars Flow)
+   ========================================= */
+
+/* 1. 設定密碼鎖背景為深邃的銀河底色 */
+#password-gate {
+    /* 從深藍到極致黑的漸層，模擬太空深處 */
+    background: radial-gradient(circle at center, #1a253a 0%, #050505 100%) !important;
+    overflow: hidden; /* 確保星星不會跑出去 */
+}
+
+/* 2. 星星層的基礎樣式 */
+.stars {
+    position: absolute;
+    top: 0; left: 0;
+    width: 200%; /* 寬度設為兩倍，方便做無縫循環動畫 */
+    height: 100%;
+    pointer-events: none; /* 不干擾點擊 */
+    z-index: 0; /* 在內容後方 */
+    opacity: 0.6; /* 保持低調，不搶戲 */
+}
+
+/* 3. 使用 CSS 徑向漸層「畫」出不同大小與密度的星星 */
+
+/* Layer 1: 最遠、最微弱的星塵 (微小星星) */
+.layer-1 {
+    background-image: 
+        radial-gradient(1px 1px at 25px 50px, #fff, transparent),
+        radial-gradient(1px 1px at 75px 150px, #fff, transparent),
+        radial-gradient(1px 1px at 120px 80px, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 200px 250px, #fff, transparent);
+    background-size: 250px 250px; /* 背景重複的尺寸 */
+    animation: starsFlow linear infinite 150s; /* 極慢速流動 */
+}
+
+/* Layer 2: 中層的星星 (稍大、帶點橄欖綠暈光) */
+.layer-2 {
+    background-image: 
+        radial-gradient(2px 2px at 50px 100px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(2px 2px at 150px 300px, var(--olive-green), transparent), /* 點綴橄欖綠 */
+        radial-gradient(2px 2px at 250px 50px, #fff, transparent);
+    background-size: 350px 350px;
+    animation: starsFlow linear infinite 100s; /* 中速流動 */
+    opacity: 0.4;
+}
+
+/* Layer 3: 最近、最亮的星星 (較稀疏) */
+.layer-3 {
+    background-image: 
+        radial-gradient(3px 3px at 100px 200px, #fff, transparent),
+        radial-gradient(2px 2px at 300px 100px, rgba(255,255,255,0.9), transparent);
+    background-size: 450px 450px;
+    animation: starsFlow linear infinite 70s; /* 較快速流動 */
+    opacity: 0.3;
+}
+
+/* 4. 星星流動動畫：水平無縫滾動 */
+@keyframes starsFlow {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%); /* 滾動到一半長度，達成無縫循環 */
+    }
+}
+/* 流星容器 */
+.shooting-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotateZ(45deg); /* 讓流星斜著掉下來 */
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* 單個流星樣式 */
+.wish {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(-45deg, var(--off-white), rgba(0, 0, 255, 0));
+    filter: drop-shadow(0 0 6px var(--off-white));
+    border-radius: 999px;
+    animation: shooting 5s linear infinite;
+    opacity: 0;
+}
+
+/* 流星長尾巴效果 */
+.wish::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px; /* 流星尾巴長度 */
+    height: 1px;
+    background: linear-gradient(-45deg, rgba(255, 255, 255, 0), var(--off-white), rgba(255, 255, 255, 0));
+}
+
+/* 設定每一顆流星不同的起始位置與延遲時間 */
+.wish:nth-child(1) { top: 10%; left: 20%; animation-delay: 1s; }
+.wish:nth-child(2) { top: 30%; left: 50%; animation-delay: 3s; animation-duration: 7s; }
+.wish:nth-child(3) { top: 50%; left: 10%; animation-delay: 5s; }
+.wish:nth-child(4) { top: 70%; left: 80%; animation-delay: 8s; animation-duration: 6s; }
+
+/* 流星劃過的動畫 */
+@keyframes shooting {
+    0% {
+        transform: translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    30% {
+        transform: translateX(-1000px); /* 向左下方劃出 */
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(-1000px);
+        opacity: 0;
+    }
+}
+
+/* 確保所有星星與流星層都在背景 */
+.stars, .shooting-stars {
+    z-index: 0; 
+    pointer-events: none; /* 確保滑鼠可以穿透這些層，點擊到下方的按鈕 */
+}
+
+/* 強制將輸入框與按鈕提到最前方 */
+#password-gate .cover-title,
+#password-gate h3,
+#password-gate #pw-input,
+#password-gate button,
+#password-gate #error-msg {
+    position: relative;
+    z-index: 999; /* 設為最高層級 */
+    pointer-events: auto; /* 確保可以正常輸入與點擊 */
+}
+
+/* 密碼鎖封面容器 */
+#password-gate {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--pure-black);
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 垂直居中所有內容 */
+    align-items: center;     /* 水平居中所有內容 */
+    z-index: 9999;
+    text-align: center;
+}
+
+/* --- 保留你原本的字體樣式 --- */
+#password-gate .cover-title {
+    font-size: 5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 0.8;
+    margin-bottom: 10px;
+    -webkit-text-stroke: 1px var(--olive-green);
+    color: transparent;
+    font-style: italic;
+    /* 確保寬度不影響置中 */
+    width: 100%;
+}
+
+#password-gate h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--off-white);
+    margin-bottom: 50px;
+    letter-spacing: 0.5em;
+    font-weight: 300;
+}
+
+/* --- 輸入框與按鈕的置中調整 --- */
+#pw-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line-color);
+    color: var(--off-white);
+    padding: 15px 0;
+    font-size: 1.2rem;
+    text-align: center;
+    outline: none;
+    width: 280px; 
+    margin-bottom: 40px; 
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.5em;
+    display: block; /* 讓它成為獨立塊級元素，方便置中 */
+}
+
+#password-gate button {
+    background: var(--olive-green);
+    color: var(--off-white);
+    border: none;
+    padding: 12px 60px;
+    letter-spacing: 0.2em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    
+    /* 置中關鍵 */
+    display: block; 
+    margin: 0 auto; 
+    transition: all 0.4s ease;
+}
+
+#password-gate button:hover {
+    background: var(--off-white);
+    color: var(--pure-black);
+    transform: translateY(-2px); /* 輕微上浮感 */
+}
+
+/* 輸入框優化 */
+#pw-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line-color);
+    color: var(--off-white);
+    padding: 15px;
+    font-size: 1.2rem;
+    text-align: center;
+    outline: none;
+    width: 280px;
+    margin-bottom: 30px;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.5em;
+}
+
+#pw-input:focus {
+    border-bottom: 1px solid var(--olive-green);
+    width: 320px; /* 聚焦時輕微伸長 */
+}
+
+/* 進入按鈕：更簡潔 */
+#password-gate button {
+    background: var(--olive-green);
+    color: var(--off-white);
+    border: none;
+    padding: 12px 40px;
+    letter-spacing: 0.2em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+#password-gate button:hover {
+    background: var(--off-white);
+    color: var(--pure-black);
+}
+
+#error-msg {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    margin-top: 20px;
+    font-family: sans-serif;
+}
+/* 漂浮容器層 */
+.floating-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    z-index: -1; /* 確保在所有內容後方 */
+    pointer-events: none;
+}
+
+/* 基礎方塊樣式：細線條、半透明 */
+.float-box {
+    position: absolute;
+    border: 1px solid rgba(85, 107, 47, 0.3); /* 使用橄欖綠，降低透明度 */
+    background: transparent;
+}
+
+/* 定義四個不同大小與位置的方塊 */
+.box-1 { width: 100px; height: 100px; top: 10%; left: 10%; animation: float 20s infinite linear; }
+.box-2 { width: 250px; height: 250px; top: 60%; left: 70%; animation: float 25s infinite linear reverse; }
+.box-3 { width: 150px; height: 150px; top: 40%; left: 30%; animation: float 18s infinite ease-in-out; }
+.box-4 { width: 80px; height: 80px; top: 80%; left: 20%; animation: float 22s infinite linear; }
+
+/* 漂浮動畫：位移 + 旋轉 */
+@keyframes float {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    33% {
+        transform: translate(30px, 50px) rotate(120deg);
+    }
+    66% {
+        transform: translate(-20px, 80px) rotate(240deg);
+    }
+    100% {
+        transform: translate(0, 0) rotate(360deg);
+    }
+}
+/* 標題與版面 */
+h2 {
+    font-size: 4rem;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+    margin: 60px 0 20px 0;
+    color: var(--off-white);
+    /* 雜誌感空心字 */
+    -webkit-text-stroke: 1px var(--off-white);
+    color: transparent;
+}
+
+#main-content {
+    display: none;
+    width: 85%;
+    max-width: 900px;
+    margin: 0 auto;
+    #main-content {
+    /* ...原本的設定... */
+    padding-bottom: 100px; /* 底部留白，避免最後一張券被擋住 */
+}
+}
+/* 確保主內容預設隱藏，且不要佔用空間 */
+#main-content {
+    display: none; 
+    position: relative;
+    z-index: 10;
+}
+
+/* 確保封面在最上層，蓋住所有東西 */
+#password-gate {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--pure-black); /* 確保背景不是透明的 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* 極高層級 */
+}
+
+/* 票券卡片樣式 */
+.coupon {
+    display: flex;
+    justify-content: space-between; /* 標題內容在左，按鈕在右 */
+    align-items: center; /* 垂直居中 */
+    background: var(--deep-navy);
+    margin-bottom: 40px;
+    padding: 0;
+    position: relative;
+    border: 1px solid var(--line-color);
+}
+
+/* 內容區塊 */
+.coupon-content {
+    padding: 30px 40px; /* 稍微縮減上下內距 */
+    flex: 1; /* 佔據左側所有剩餘空間 */
+}
+
+/* 縮小按鈕並固定在右側 */
+button {
+    background: transparent;
+    color: var(--off-white);
+    border: 1px solid var(--line-color);
+    padding: 8px 20px; /* 縮小按鈕尺寸 */
+    text-transform: uppercase;
+    font-size: 0.65rem; /* 縮小字體，增加高級感 */
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: 0.4s;
+    margin-right: 40px; /* 讓按鈕不要貼死右邊界 */
+    white-space: nowrap; /* 確保文字不會斷行 */
+}
+
+button:hover {
+    background: var(--olive-green);
+    border-color: var(--olive-green);
+    color: var(--off-white);
+}
+
+/* 針對已使用狀態的微調 */
+.coupon.used {
+    background: #0a0a0a;
+    opacity: 0.5;
+    filter: grayscale(1);
+}
+
+.coupon.used .coupon-content {
+    border-left: 4px solid #333; /* 已使用後的標註變深色 */
+}
+
+/* 調整印章位置，避免擋到按鈕 */
+.stamp {
+    position: absolute;
+    top: 50%;
+    right: 15%; /* 往左移一點點 */
+    transform: translateY(-50%) rotate(-15deg);
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 5px 15px;
+    pointer-events: none;
+}
+
+/* 按鈕風格 */
+button {
+    background: transparent;
+    color: var(--off-white);
+    border: 1px solid var(--off-white);
+    padding: 10px 30px;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+button:hover {
+    background: var(--olive-green);
+    border-color: var(--olive-green);
+}
+
+/* 已使用的狀態：低彩度 */
+.coupon.used {
+    background: #0a0a0a;
+    opacity: 0.5;
+    filter: grayscale(1);
+}
+
+.stamp {
+    position: absolute;
+    top: 50%;
+    right: 10%;
+    transform: translateY(-50%) rotate(-15deg);
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 5px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: none;
+}
+
+.used .stamp { display: block; }
+
+/* 裝飾性小字 */
+.history-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--olive-green);
+    margin: 100px 0 30px 0;
+    display: flex;
+    align-items: center;
+}
+
+.history-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line-color);
+    margin-left: 20px;
+}
